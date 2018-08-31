@@ -1,0 +1,6 @@
+com\db\ClientController.class
+com\db\utils\decorators\Decorator.class
+com\db\utils\decorators\ConsoleDecorator.class
+com\db\utils\sctructures\Message.class
+com\db\commands\Command.class
+com\db\connectors\ServerConnector.class
