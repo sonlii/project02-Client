@@ -2,7 +2,16 @@ package com.db;
 
 import javafx.util.Pair;
 
+/**
+ * Is used to parse input from console and send results to calling class.
+ */
 public class ConsoleParser {
+    /**
+     * Parse string and return command with message
+     * @param line line to be parsed
+     * @return pair of command type and message body
+     * @throws Exception if command is in wrong format or is unsupported
+     */
     public Pair<CommandType, String> parse(String line) throws Exception {
         CommandType commandType = null;
         String message = "";
@@ -40,5 +49,4 @@ public class ConsoleParser {
         }
         return parts[1];
     }
-
 }
