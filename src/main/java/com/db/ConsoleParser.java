@@ -10,17 +10,11 @@ public class ConsoleParser {
         switch (parts[0]) {
             case "/hist":
                 commandType = CommandType.HIST;
-                if (parts.length > 1) {
-                    throw new Exception("Incorrect command format");
-                }
+                message = processHist(parts);
                 break;
             case "/snd":
                 commandType = CommandType.SND;
-                if (parts.length == 1 || "".equals(parts[1])) {
-                    throw new Exception("Empty message");
-                } else if (parts[1].length() > 150) {
-                    throw new Exception("Message cannot be longer than 150 characters");
-                }
+                message = processSnd(parts);
                 break;
             default:
                 throw new Exception("Unsupported command");
@@ -30,4 +24,21 @@ public class ConsoleParser {
         }
         return new Pair<>(commandType, message);
     }
+
+    private String processHist (String[] parts) throws Exception {
+        if (parts.length > 1) {
+            throw new Exception("Incorrect command format");
+        }
+        return "";
+    }
+
+    private String processSnd(String[] parts) throws Exception {
+        if (parts.length == 1 || "".equals(parts[1])) {
+            throw new Exception("Empty message");
+        } else if (parts[1].length() > 150) {
+            throw new Exception("Message cannot be longer than 150 characters");
+        }
+        return parts[1];
+    }
+
 }
