@@ -1,16 +1,15 @@
 package com.db.utils.sctructures;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * Class that represents a message. Contains a bofy of the message and server timestamp
+ */
 public class Message {
     private String body;
     private Date timestamp;
