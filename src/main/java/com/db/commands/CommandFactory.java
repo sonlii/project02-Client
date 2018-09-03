@@ -9,10 +9,8 @@ public class CommandFactory {
         switch (type) {
             case SND:
                 return new SendCommand(message, serverConnector);
-            case HIST:
+            default: //default type is HIST
                 return new HistCommand(serverConnector);
-            default:
-                throw new IllegalArgumentException("Can not resolve command type:" + type.toString());
         }
     }
 }

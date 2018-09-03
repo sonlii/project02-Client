@@ -2,19 +2,14 @@ package com.db;
 
 import com.db.commands.Command;
 import com.db.commands.CommandFactory;
-import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
-import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.exceptions.ConsoleParserException;
-import com.db.exceptions.SaverException;
-import com.db.utils.decorators.Decorator;
-import com.db.utils.sctructures.Message;
+import com.db.utils.ConsoleParser;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
 
 import java.io.*;
-import java.util.Collection;
 
 /**
  * Communicates with serverConnector and asks Console to print smth

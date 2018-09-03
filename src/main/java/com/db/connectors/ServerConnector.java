@@ -8,9 +8,9 @@ import java.util.Date;
 /**
  * Provides communication between the server and the client
  */
-public interface ServerConnector {
-    Collection<Message> getMessages(long timestamp);
-    Collection<Message> getHistory();
-    Date getServerTime();
-    int sendMessage(String message);
+public class ServerConnector {
+    public Collection<Message> getMessages(long timestamp){ return null;}
+    public Collection<Message> getHistory(){ return null;}
+    public Date getServerTime(){ return null;}
+    public int sendMessage(String message){ return 0;}
 }

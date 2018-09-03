@@ -8,6 +8,7 @@ public class HistCommand implements Command{
     private ServerConnector serverConnector;
 
     public HistCommand(ServerConnector serverConnector) {
+        this.serverConnector = serverConnector;
     }
 
     @Override

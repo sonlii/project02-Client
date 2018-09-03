@@ -15,4 +15,5 @@ public class MessageCommangResult implements CommandResult {
     public void save(Saver saver) throws SaverException {
         saver.save(this);
     }
+
 }

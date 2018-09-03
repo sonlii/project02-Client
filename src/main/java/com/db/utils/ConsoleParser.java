@@ -1,5 +1,6 @@
-package com.db;
+package com.db.utils;
 
+import com.db.CommandType;
 import com.db.exceptions.ConsoleParserException;
 import javafx.util.Pair;
 
@@ -20,13 +21,13 @@ public class ConsoleParser {
 
         String[] parsed = line.split("\\s", 2);
         try {
-            return new Pair<>(CommandType.valueOf(parsed[0].toUpperCase()), parsed.length == 1 ? null : parsed[1]);
+            String message = parsed.length == 1 ? null : parsed[1];
+            if (message != null && message.length() > 150){
+                throw new ConsoleParserException("Max Size for Message - 150 symbols");
+            }
+            return new Pair<>(CommandType.valueOf(parsed[0].toUpperCase()), message);
         } catch (IllegalArgumentException e) {
             throw new ConsoleParserException("Unknown command: " + parsed[0]);
         }
-    }
-
-    public static void main(String[] args) throws ConsoleParserException {
-        System.out.println(new ConsoleParser().parse("/snd"));
     }
 }
