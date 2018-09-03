@@ -9,18 +9,18 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-public class JsonConverterTest {
-    private JsonConverter jsonConverter;
+public class JsonSerializerTest {
+    private JsonSerializer jsonConverter;
 
     @Before
     public void setUp() throws Exception {
-        jsonConverter = new JsonConverter();
+        jsonConverter = new JsonSerializer();
     }
 
     @Test
     public void shouldReturnMessageObjectFromJson() throws IOException {
         String jsonString = "{\"body\":\"message\",\"timestamp\":1535723804800}";
-        Message msg = jsonConverter.fromJson(jsonString, Message.class);
+        Message msg = jsonConverter.deserialize(jsonString, Message.class);
         assertNotNull(msg);
 
     }
@@ -31,7 +31,7 @@ public class JsonConverterTest {
         Date currentDate = new Date();
         Message message = new Message("message", currentDate);
 
-        String jsonString = jsonConverter.convert(message);
+        String jsonString = jsonConverter.serialize(message);
         assertTrue(jsonString.contains("\"body\":\"message\""));
         assertTrue(jsonString.contains("\"timestamp\":"+ currentDate.getTime() ));
     }
