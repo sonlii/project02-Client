@@ -13,5 +13,4 @@ public interface ServerConnector {
     Collection<Message> getHistory();
     Date getServerTime();
     int sendMessage(String message);
-
 }

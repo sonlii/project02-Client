@@ -5,12 +5,11 @@ import com.db.exceptions.SaverException;
 import com.db.utils.sctructures.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import java.util.Collection;
 
 @Getter
 @AllArgsConstructor
-public class MultipleMessageCommandResult implements CommandResult {
-    Collection<Message> messages;
+public class MessageCommangResult implements CommandResult {
+    private Message message;
 
     @Override
     public void save(Saver saver) throws SaverException {

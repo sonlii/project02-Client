@@ -11,12 +11,8 @@ public class CommandFactory {
                 return new SendCommand(message, serverConnector);
             case HIST:
                 return new HistCommand(serverConnector);
-
-                default:
-                    throw new UnsupportedOperationException(type.toString());
-
+            default:
+                throw new IllegalArgumentException("Can not resolve command type:" + type.toString());
         }
-
     }
-
 }

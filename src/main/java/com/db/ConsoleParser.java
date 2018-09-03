@@ -1,5 +1,6 @@
 package com.db;
 
+import com.db.exceptions.ConsoleParserException;
 import javafx.util.Pair;
 
 /**
@@ -10,44 +11,22 @@ public class ConsoleParser {
      * Parse string and return command with message
      * @param line line to be parsed
      * @return pair of command type and message body
-     * @throws Exception if command is in wrong format or is unsupported
+     * @throws ConsoleParserException if command is in wrong format or is unsupported
      */
-    public Pair<CommandType, String> parse(String line) throws Exception {
-        CommandType commandType = null;
-        String message = "";
-        String[] parts = line.split(" ", 2);
-        switch (parts[0]) {
-            case "/hist":
-                commandType = CommandType.HIST;
-                message = processHist(parts);
+    public Pair<CommandType, String> parse(String line) throws ConsoleParserException {
+        if (line.length() == 0) throw new ConsoleParserException("Input can not be empty");
+        if (line.charAt(0) != '/') throw new ConsoleParserException("Command must starts with '/'");
+        if ((line = line.substring(1)).length() == 0) throw new ConsoleParserException("Command can not be empty");
 
-                break;
-            case "/snd":
-                commandType = CommandType.SND;
-                message = processSnd(parts);
-                break;
-            default:
-                throw new Exception("Unsupported command");
+        String[] parsed = line.split("\\s", 2);
+        try {
+            return new Pair<>(CommandType.valueOf(parsed[0].toUpperCase()), parsed.length == 1 ? null : parsed[1]);
+        } catch (IllegalArgumentException e) {
+            throw new ConsoleParserException("Unknown command: " + parsed[0]);
         }
-        if(parts.length > 1) {
-            message = parts[1];
-        }
-        return new Pair<>(commandType, message);
     }
 
-    private String processHist (String[] parts) throws Exception {
-        if (parts.length > 1) {
-            throw new Exception("Incorrect command format");
-        }
-        return "";
-    }
-
-    private String processSnd(String[] parts) throws Exception {
-        if (parts.length == 1 || "".equals(parts[1])) {
-            throw new Exception("Empty message");
-        } else if (parts[1].length() > 150) {
-            throw new Exception("Message cannot be longer than 150 characters");
-        }
-        return parts[1];
+    public static void main(String[] args) throws ConsoleParserException {
+        System.out.println(new ConsoleParser().parse("/snd"));
     }
 }
