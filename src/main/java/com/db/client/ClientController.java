@@ -1,5 +1,7 @@
-package com.db;
+package com.db.client;
 
+import com.db.CommandType;
+import com.db.Saver;
 import com.db.commands.Command;
 import com.db.commands.CommandFactory;
 import com.db.commands.results.CommandResult;

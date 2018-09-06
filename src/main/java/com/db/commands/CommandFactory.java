@@ -11,7 +11,7 @@ public class CommandFactory {
             case SND:
                 return new SendCommand(message, serverConnector);
             case HIST:
-                return new HistCommand(serverConnector);
+                return new HistCommand(Integer.parseInt(message), serverConnector);
             case QUIT:
                 return new QuitCommand(serverConnector);
             default: //if command type is different
