@@ -33,6 +33,7 @@ public class ClientControllerTest
         return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
     }
 
+
     @Test
     public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException {
         Message sendMessage = new Message("test \\send", null);
