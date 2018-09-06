@@ -1,14 +1,57 @@
 package com.db;
 
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.*;
 
+import com.db.commands.Command;
+import com.db.commands.CommandFactory;
+import com.db.commands.results.BlankCommandResult;
+import com.db.commands.results.CommandResult;
+import com.db.commands.results.MultipleMessageCommandResult;
+import com.db.connectors.ServerConnector;
+import com.db.exceptions.UnknownCommandException;
+import com.db.utils.sctructures.Message;
+import com.db.utils.sctructures.Request;
+import com.db.utils.sctructures.Response;
+import javafx.util.Pair;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+
 
 public class ClientControllerTest
 {
+    private ServerConnector serverConnector;
+
+    @Before
+    public void setUp() {
+        serverConnector = mock(ServerConnector.class);
+    }
+
+    private Command getCommand(Pair<CommandType, String> parsedLine){
+        try {
+            return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
+        } catch (UnknownCommandException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() {
+        Message sendMessage = new Message("test \\send", null);
+        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
+        Response expectedResponse = new Response();
+        expectedResponse.setMessage(new Message());
+        expectedResponse.setStatus(0);
+        when(serverConnector.sendRequest(any(Request.class))).thenReturn(expectedResponse);
+
+        Command command = getCommand(parsedLine);
+        CommandResult commandResult = command.exec();
+
+        verify(serverConnector, times(1)).sendRequest(any(Request.class));
+        assertTrue(commandResult.getClass() == BlankCommandResult.class);
+        assertTrue(command.isFinished());
     }
 }
