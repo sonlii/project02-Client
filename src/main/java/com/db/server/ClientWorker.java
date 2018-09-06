@@ -1,5 +1,6 @@
 package com.db.server;
 
+import com.db.server.persistance.FileIterator;
 import com.db.server.persistance.Repository;
 import com.db.utils.Serializer;
 import com.db.utils.sctructures.Message;
@@ -40,7 +41,8 @@ public class ClientWorker implements Runnable {
                             break;
                         case HIST:
                             Collection<Message> history;
-                            while(!(history = repository.getNextMessages(1000)).isEmpty()) {
+                            FileIterator fileIterator = repository.getFileIterator();
+                            while(!(history = fileIterator.getNextMessages(1000)).isEmpty()) {
                                 history.forEach(m -> {
                                     try {
                                         out.println(serializer.serialize(new Response(m, 1000)));
