@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MessageCommangResult implements CommandResult {
+public class MessageCommandResult implements CommandResult {
     private Message message;
 
     @Override

@@ -34,8 +34,10 @@ public class ClientController {
                 continue;
             }
             currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-            CommandResult result = currentCommand.exec();
-            result.save(saver);
+            while (!currentCommand.isFinished()) {
+                CommandResult result = currentCommand.exec();
+                result.save(saver);
+            }
         }
     }
 

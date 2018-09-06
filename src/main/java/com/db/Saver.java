@@ -1,7 +1,7 @@
 package com.db;
 
 import com.db.commands.results.BlankCommandResult;
-import com.db.commands.results.MessageCommangResult;
+import com.db.commands.results.MessageCommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.exceptions.SaverException;
 import com.db.utils.decorators.Decorator;
@@ -29,7 +29,7 @@ public class Saver {
         }
     }
 
-    public void save(MessageCommangResult commandResult) throws SaverException {
+    public void save(MessageCommandResult commandResult) throws SaverException {
         writer.println(decorator.decorate(commandResult.getMessage()));
     }
 }

@@ -10,6 +10,8 @@ import com.db.commands.results.CommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.utils.sctructures.Message;
+import com.db.utils.sctructures.Request;
+import com.db.utils.sctructures.Response;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,32 +27,25 @@ public class ClientControllerTest
     public void setUp() {
         serverConnector = mock(ServerConnector.class);
     }
-    private CommandResult getCommandResult(Pair<CommandType, String> parsedLine){
-        Command newCommand = (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-        return newCommand.exec();
+
+    private Command getCommand(Pair<CommandType, String> parsedLine){
+        return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
     }
 
     @Test
-    public void shouldCreateHistCommandAndCallGetHistoryMethodAndReturnMultipleMessageCommandResult() {
-        Message historyMessage = new Message("test \\hist", null);
-        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.HIST, historyMessage.getBody());
+    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() {
+        Message sendMessage = new Message("test \\send", null);
+        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
+        Response expectedResponse = new Response();
+        expectedResponse.setMessage(new Message());
+        expectedResponse.setStatus(0);
+        when(serverConnector.sendRequest(any(Request.class))).thenReturn(expectedResponse);
 
-        when(serverConnector.getHistory()).thenReturn(Arrays.asList(historyMessage));
-        CommandResult commandResult = getCommandResult(parsedLine);
+        Command command = getCommand(parsedLine);
+        CommandResult commandResult = command.exec();
 
-        verify(serverConnector, times(1)).getHistory();
-        assertTrue(commandResult.getClass() == MultipleMessageCommandResult.class);
-    }
-
-    @Test
-    public void shouldCreateSendCommandAndCallSendMessageMethodAndReturnBlankMessageCommandResult() {
-        Message historyMessage = new Message("test \\send", null);
-        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, historyMessage.getBody());
-
-        when(serverConnector.sendMessage( historyMessage.getBody())).thenReturn(0);
-        CommandResult commandResult = getCommandResult(parsedLine);
-
-        verify(serverConnector, times(1)).sendMessage(historyMessage.getBody());
+        verify(serverConnector, times(1)).sendRequest(any(Request.class));
         assertTrue(commandResult.getClass() == BlankCommandResult.class);
+        assertTrue(command.isFinished());
     }
 }
