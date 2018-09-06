@@ -16,7 +16,7 @@ public class ConsoleParser {
      */
     public Pair<CommandType, String> parse(String line) throws ConsoleParserException {
         if (line.length() == 0) throw new ConsoleParserException("Input can not be empty");
-        if (line.charAt(0) != '/') throw new ConsoleParserException("Command must starts with '/'");
+        if (line.charAt(0) != '/') throw new ConsoleParserException("Command must start with '/'");
         if ((line = line.substring(1)).length() == 0) throw new ConsoleParserException("Command can not be empty");
 
         String[] parsed = line.split("\\s", 2);
