@@ -13,7 +13,7 @@ public class FileRepository implements Repository {
     public FileRepository(File file, Serializer serializer) throws IOException {
         this.file = file;
         output = new PrintWriter(
-                new BufferedWriter(new FileWriter(file))
+                new BufferedWriter(new FileWriter(file, true))
         );
         this.serializer = serializer;
     }

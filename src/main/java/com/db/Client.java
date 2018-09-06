@@ -5,9 +5,7 @@ import com.db.connectors.ServerConnector;
 import com.db.utils.ConsoleParser;
 import com.db.utils.decorators.ConsoleDecorator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Client {
     public static void main(String[] args) {
@@ -15,7 +13,7 @@ public class Client {
             ClientController controller = new ClientController(serverConnector,
                     new BufferedReader(
                             new InputStreamReader(System.in)),
-                    new Saver(System.out, new ConsoleDecorator()),
+                    new Saver(new PrintWriter( new OutputStreamWriter(System.out)), new ConsoleDecorator()),
                     new ConsoleParser(),
                     new CommandFactory());
         //    while (true) {
