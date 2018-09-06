@@ -17,21 +17,28 @@ import static java.lang.Thread.interrupted;
 
 public class ClientWorker implements Runnable {
     private static final int OK_STATUS = 0;
-    private static final int ERROR_STATUS = 0;
-    private static final int HISTORY_CONTINUATION_STATUS = 0;
-    public static final int BATCH_SIZE = 1000;
+    private static final int ERROR_STATUS = 505;
+    private static final int HISTORY_CONTINUATION_STATUS = 1000;
+    private static final int HISTORY_FINAL_STATUS = 100;
+    private static final int BATCH_SIZE = 1000;
+
     private final Socket clientSocket;
     private final Serializer serializer;
     private final Repository repository;
+    private final Server server;
+
     private final String okStatus;
     private final String errorStatus;
+    private final String endHistoryStatus;
+
     private BufferedReader in;
     private PrintWriter out;
 
-    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository) throws IOException {
+    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server) throws IOException {
         this.clientSocket = clientSocket;
         this.serializer = serializer;
         this.repository = repository;
+        this.server = server;
 
         Response emptyResponseWithStatus = new Response();
         emptyResponseWithStatus.setStatus(OK_STATUS);
@@ -39,6 +46,9 @@ public class ClientWorker implements Runnable {
 
         emptyResponseWithStatus.setStatus(ERROR_STATUS);
         this.errorStatus = serializer.serialize(emptyResponseWithStatus);
+
+        emptyResponseWithStatus.setStatus(HISTORY_FINAL_STATUS);
+        this.endHistoryStatus = serializer.serialize(emptyResponseWithStatus);
     }
 
     @Override
@@ -54,8 +64,7 @@ public class ClientWorker implements Runnable {
                     System.out.println("srv: " + str);
                     Request request = serializer.deserialize(str, Request.class);
                     String responseStatusString = processRequest(request);
-                    out.println(responseStatusString);
-                    out.flush();
+                    send(responseStatusString);
                 } while (!interrupted());
 
             } catch (IOException e) {
@@ -81,6 +90,7 @@ public class ClientWorker implements Runnable {
                 Message clientMessage = request.getMessage();
                 clientMessage.setTimestamp(new Date());
                 repository.saveMessage(clientMessage);
+                server.broadcast(serializer.serialize(clientMessage), this);
                 break;
             case HIST:
                 Collection<Message> history;
@@ -88,13 +98,13 @@ public class ClientWorker implements Runnable {
                 while(!(history = fileIterator.getNextMessages()).isEmpty()) {
                     for (Message msg : history) {
                         try {
-                            out.println(serializer.serialize(new Response(msg, HISTORY_CONTINUATION_STATUS)));
+                            send(serializer.serialize(new Response(msg, HISTORY_CONTINUATION_STATUS)));
                         } catch (IOException e) {
                             return errorStatus;
                         }
                     }
                 }
-                break;
+                return endHistoryStatus;
             case QUIT:
                 currentThread().interrupt();
             default:
@@ -106,7 +116,11 @@ public class ClientWorker implements Runnable {
     private void processException(Exception e) {
         e.printStackTrace();
         if(out == null) return;
-        out.println(errorStatus);
+        send(errorStatus);
+    }
+
+    public void send(String message) {
+        out.println(message);
         out.flush();
     }
 }

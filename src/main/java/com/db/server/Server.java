@@ -39,7 +39,7 @@ public class Server implements Runnable {
                 try {
                     Socket clientSocket = listener.accept();
                     System.out.println("Client connected");
-                    executors.execute(new ClientWorker(clientSocket, serializer, repository));
+                    executors.execute(new ClientWorker(clientSocket, serializer, repository, this));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -49,5 +49,11 @@ public class Server implements Runnable {
         } finally {
             executors.shutdownNow();
         }
+    }
+
+    public void broadcast(String message, ClientWorker excludedWorker) {
+        clients.stream()
+                .filter(m -> m == excludedWorker)
+                .forEach(m -> m.send(message));
     }
 }
