@@ -61,7 +61,8 @@ public class ClientWorker implements Runnable {
             try {
                 do {
                     String str = in.readLine();
-                    System.out.println("to client: " + str);
+                    if (str == null) break;
+                    System.out.println("from client: " + str);
                     Request request = serializer.deserialize(str, Request.class);
                     String responseStatusString = processRequest(request);
                     send(responseStatusString);
@@ -108,6 +109,7 @@ public class ClientWorker implements Runnable {
                 return endHistoryStatus;
             case QUIT:
                 currentThread().interrupt();
+                break;
             default:
                 return errorStatus;
         }

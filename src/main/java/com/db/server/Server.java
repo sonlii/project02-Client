@@ -7,11 +7,13 @@ import com.db.utils.Serializer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
 
 import static java.lang.Thread.interrupted;
 
@@ -38,6 +40,7 @@ public class Server implements Runnable {
         ExecutorService executors = Executors.newFixedThreadPool(MAX_CLIENTS_NUMBER);
 
         try (ServerSocket listener = new ServerSocket(port)) {
+            listener.setSoTimeout(1000);
             while (!interrupted()) {
                 try {
                     Socket clientSocket = listener.accept();
@@ -45,6 +48,8 @@ public class Server implements Runnable {
                     ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this);
                     executors.execute(worker);
                     clients.add(worker);
+                } catch (SocketTimeoutException e) {
+                    //pass
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -62,7 +67,7 @@ public class Server implements Runnable {
 
     public void broadcast(String message, ClientWorker excludedWorker) {
         clients.stream()
-                .filter(m -> m == excludedWorker)
+                .filter(m -> m != excludedWorker)
                 .forEach(m -> m.send(message));
     }
 }
