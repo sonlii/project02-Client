@@ -40,8 +40,10 @@ public class ClientController {
 
             try {
                 currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-                CommandResult result = currentCommand.exec();
-                result.save(saver);
+                while (!currentCommand.isFinished()) {
+                    CommandResult result = currentCommand.exec();
+                    result.save(saver);
+                }
             } catch (UnknownCommandException e) {
                 saver.save(e.getMessage());
             }

@@ -45,6 +45,10 @@ public class ServerConnector implements Closeable {
         return null;
     }
 
+    public BufferedReader getIn() {
+        return in;
+    }
+
     @Override
     public void close() throws IOException {
         socket.close();

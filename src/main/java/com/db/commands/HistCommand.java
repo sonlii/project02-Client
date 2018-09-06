@@ -6,10 +6,12 @@ import com.db.commands.results.CommandResult;
 import com.db.commands.results.MessageCommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
+import com.db.utils.JsonSerializer;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
 import com.db.utils.sctructures.Response;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -27,14 +29,18 @@ public class HistCommand implements Command {
 
     @Override
     public CommandResult exec() {
-        Request request;
+        Response response = null;
         if (firstRequest) {
-            request = new Request(new Message("" + pageNumber, null), CommandType.HIST);
+            Request request = new Request(new Message("" + pageNumber, null), CommandType.HIST);
             firstRequest = false;
+            response = serverConnector.sendRequest(request);
         } else {
-            request = null;
+            try {
+                response = (new JsonSerializer()).deserialize(serverConnector.getIn().readLine(), Response.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        Response response = serverConnector.sendRequest(request);
         if (response.getStatus() == 100) {
             isFinished = true;
             return new MultipleMessageCommandResult(broadcastToSend);
