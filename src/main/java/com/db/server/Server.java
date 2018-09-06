@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server implements Runnable {
     private static final int MAX_CLIENTS_NUMBER = 1000;
 
     private int port;
@@ -29,7 +29,7 @@ public class Server {
         this.repository = repository;
     }
 
-    public void start() {
+    public void run() {
         ExecutorService executors = Executors.newFixedThreadPool(MAX_CLIENTS_NUMBER);
 
         try (ServerSocket listener = new ServerSocket(port)) {
