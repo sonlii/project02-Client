@@ -1,18 +1,18 @@
 package com.db;
 
 import com.db.commands.results.BlankCommandResult;
-import com.db.commands.results.MessageCommangResult;
+import com.db.commands.results.MessageCommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.exceptions.SaverException;
 import com.db.utils.decorators.Decorator;
 import com.db.utils.sctructures.Message;
 import lombok.AllArgsConstructor;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 @AllArgsConstructor
 public class Saver {
-    private PrintStream writer;
+    private PrintWriter writer;
     private Decorator decorator;
 
     public void save(String message) throws SaverException {
@@ -29,7 +29,7 @@ public class Saver {
         }
     }
 
-    public void save(MessageCommangResult commandResult) throws SaverException {
+    public void save(MessageCommandResult commandResult) throws SaverException {
         writer.println(decorator.decorate(commandResult.getMessage()));
     }
 }
