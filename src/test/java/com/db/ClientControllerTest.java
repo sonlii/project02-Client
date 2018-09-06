@@ -9,6 +9,7 @@ import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
+import com.db.exceptions.UnknownCommandException;
 import com.db.utils.sctructures.Message;
 import javafx.util.Pair;
 import org.junit.Before;
@@ -25,13 +26,13 @@ public class ClientControllerTest
     public void setUp() {
         serverConnector = mock(ServerConnector.class);
     }
-    private CommandResult getCommandResult(Pair<CommandType, String> parsedLine){
+    private CommandResult getCommandResult(Pair<CommandType, String> parsedLine) throws UnknownCommandException {
         Command newCommand = (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
         return newCommand.exec();
     }
 
     @Test
-    public void shouldCreateHistCommandAndCallGetHistoryMethodAndReturnMultipleMessageCommandResult() {
+    public void shouldCreateHistCommandAndCallGetHistoryMethodAndReturnMultipleMessageCommandResult() throws UnknownCommandException {
         Message historyMessage = new Message("test \\hist", null);
         Pair<CommandType, String> parsedLine = new Pair<>(CommandType.HIST, historyMessage.getBody());
 
@@ -43,7 +44,7 @@ public class ClientControllerTest
     }
 
     @Test
-    public void shouldCreateSendCommandAndCallSendMessageMethodAndReturnBlankMessageCommandResult() {
+    public void shouldCreateSendCommandAndCallSendMessageMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException {
         Message historyMessage = new Message("test \\send", null);
         Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, historyMessage.getBody());
 
