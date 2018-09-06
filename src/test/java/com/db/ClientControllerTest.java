@@ -30,7 +30,12 @@ public class ClientControllerTest
     }
 
     private Command getCommand(Pair<CommandType, String> parsedLine){
-        return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
+        try {
+            return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
+        } catch (UnknownCommandException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Test
