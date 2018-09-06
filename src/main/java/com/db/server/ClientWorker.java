@@ -123,7 +123,7 @@ public class ClientWorker implements Runnable {
     }
 
     public void send(String message) {
-        System.out.println("to client: " + message);
+    //    System.out.println("to client: " + message);
         out.println(message);
         out.flush();
     }

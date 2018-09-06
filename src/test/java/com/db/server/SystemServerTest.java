@@ -1,6 +1,6 @@
 package com.db.server;
 
-import com.db.ClientController;
+import com.db.client.ClientController;
 import com.db.Saver;
 import com.db.commands.CommandFactory;
 import com.db.connectors.ServerConnector;
