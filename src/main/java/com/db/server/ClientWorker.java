@@ -61,7 +61,7 @@ public class ClientWorker implements Runnable {
             try {
                 do {
                     String str = in.readLine();
-                    System.out.println("srv: " + str);
+                    System.out.println("to client: " + str);
                     Request request = serializer.deserialize(str, Request.class);
                     String responseStatusString = processRequest(request);
                     send(responseStatusString);
@@ -78,6 +78,7 @@ public class ClientWorker implements Runnable {
                 out.close();
                 clientSocket.close();
                 System.out.println("client disconnected");
+                server.removeWorker(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -90,7 +91,7 @@ public class ClientWorker implements Runnable {
                 Message clientMessage = request.getMessage();
                 clientMessage.setTimestamp(new Date());
                 repository.saveMessage(clientMessage);
-                server.broadcast(serializer.serialize(clientMessage), this);
+                server.broadcast(serializer.serialize(new Response(clientMessage, OK_STATUS)), this);
                 break;
             case HIST:
                 Collection<Message> history;
@@ -120,6 +121,7 @@ public class ClientWorker implements Runnable {
     }
 
     public void send(String message) {
+        System.out.println("to client: " + message);
         out.println(message);
         out.flush();
     }

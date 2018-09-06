@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,6 +31,7 @@ public class Server implements Runnable {
         this.port = port;
         this.serializer = serializer;
         this.repository = repository;
+        this.clients = Collections.synchronizedSet(new HashSet<>());
     }
 
     public void run() {
@@ -39,7 +42,9 @@ public class Server implements Runnable {
                 try {
                     Socket clientSocket = listener.accept();
                     System.out.println("Client connected");
-                    executors.execute(new ClientWorker(clientSocket, serializer, repository, this));
+                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this);
+                    executors.execute(worker);
+                    clients.add(worker);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -49,6 +54,10 @@ public class Server implements Runnable {
         } finally {
             executors.shutdownNow();
         }
+    }
+
+    public void removeWorker(ClientWorker worker) {
+        clients.remove(worker);
     }
 
     public void broadcast(String message, ClientWorker excludedWorker) {
