@@ -3,6 +3,6 @@ package com.db;
 /**
  * Enum representing available types of commands
  */
-enum CommandType {
+public  enum CommandType {
     SND, HIST
 }
