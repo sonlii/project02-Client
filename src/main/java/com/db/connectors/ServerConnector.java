@@ -32,9 +32,13 @@ public class ServerConnector implements Closeable {
     public Response sendRequest(Request request) {
         JsonSerializer jsonSerializer = new JsonSerializer();
         try {
-            out.println(jsonSerializer.serialize(request));
-            out.flush();
-            return jsonSerializer.deserialize(in.readLine(), Response.class);
+            if (request != null) {
+                out.println(jsonSerializer.serialize(request));
+                out.flush();
+            }
+            String str = in.readLine();
+            System.out.println("client: " + str);
+            return jsonSerializer.deserialize(str, Response.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

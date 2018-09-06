@@ -1,6 +1,6 @@
-package com.db.client;
+package com.db;
 
-import com.db.Saver;
+import com.db.client.ClientController;
 import com.db.commands.CommandFactory;
 import com.db.connectors.ServerConnector;
 import com.db.server.Server;
@@ -11,16 +11,19 @@ import com.db.utils.decorators.ConsoleDecorator;
 
 import java.io.*;
 
-public class Client {
-    public static void main(String[] args) {
+import static java.lang.Thread.sleep;
 
-        try {
-            (new Thread(new Server(6666,
-                    new FileRepository(new File("repo.txt"),
-                            new JsonSerializer())))).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+public class ServerApp {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Server server = new Server(
+                6666,
+                new FileRepository(
+                        new File("testfile.txt"), new JsonSerializer()
+                )
+        );
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+        sleep(1000);
 
         try (ServerConnector serverConnector = new ServerConnector("127.0.0.1", 6666);) {
             ClientController controller = new ClientController(serverConnector,
@@ -29,11 +32,9 @@ public class Client {
                     new Saver(new PrintWriter( new OutputStreamWriter(System.out)), new ConsoleDecorator()),
                     new ConsoleParser(),
                     new CommandFactory());
-            (new Thread(new BroadcastListener(serverConnector))).start();
-
-            while (true) {
-                controller.processInput();
-            }
+            //    while (true) {
+            controller.processInput();
+            //    }
         } catch (IOException e) {
             e.printStackTrace();
         }

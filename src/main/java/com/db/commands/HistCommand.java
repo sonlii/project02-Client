@@ -17,6 +17,7 @@ public class HistCommand implements Command {
     private ServerConnector serverConnector;
     private int pageNumber;
     private boolean isFinished = false;
+    private boolean firstRequest = true;
     private Collection<Message> broadcastToSend = new LinkedList<>();
 
     public HistCommand(int pageNumber, ServerConnector serverConnector) {
@@ -26,7 +27,13 @@ public class HistCommand implements Command {
 
     @Override
     public CommandResult exec() {
-        Request request = new Request(new Message("" + pageNumber, null), CommandType.HIST);
+        Request request;
+        if (firstRequest) {
+            request = new Request(new Message("" + pageNumber, null), CommandType.HIST);
+            firstRequest = false;
+        } else {
+            request = null;
+        }
         Response response = serverConnector.sendRequest(request);
         if (response.getStatus() == 100) {
             isFinished = true;

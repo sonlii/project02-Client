@@ -29,17 +29,12 @@ public class ClientControllerTest
         serverConnector = mock(ServerConnector.class);
     }
 
-    private Command getCommand(Pair<CommandType, String> parsedLine){
-        try {
-            return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-        } catch (UnknownCommandException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private Command getCommand(Pair<CommandType, String> parsedLine) throws UnknownCommandException {
+        return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
     }
 
     @Test
-    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() {
+    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException {
         Message sendMessage = new Message("test \\send", null);
         Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
         Response expectedResponse = new Response();
