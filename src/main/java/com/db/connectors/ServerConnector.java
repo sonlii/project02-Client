@@ -14,12 +14,6 @@ import java.util.Date;
  * Provides communication between the server and the client
  */
 public class ServerConnector implements Closeable {
-    private String address;
-    private int port;
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
-
     public ServerConnector(String address, int port) throws IOException {
         this.address = address;
         this.port = port;
@@ -42,7 +36,7 @@ public class ServerConnector implements Closeable {
                 out.flush();
             }
             String str = in.readLine();
-            System.out.println("client: " + str);
+        //    System.out.println("client: " + str);
             return jsonSerializer.deserialize(str, Response.class);
         } catch (IOException e) {
             e.printStackTrace();

@@ -26,7 +26,7 @@ public class Client {
             ClientController controller = new ClientController(serverConnector,
                     new BufferedReader(
                             new InputStreamReader(System.in)),
-                    new Saver(new PrintWriter( new OutputStreamWriter(System.out)), new ConsoleDecorator()),
+                    new Saver(new PrintWriter(new OutputStreamWriter(System.out)), new ConsoleDecorator()),
                     new ConsoleParser(),
                     new CommandFactory());
             (new Thread(new BroadcastListener(serverConnector))).start();
