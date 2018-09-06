@@ -9,6 +9,7 @@ import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
 import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
+import com.db.exceptions.UnknownCommandException;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
 import com.db.utils.sctructures.Response;

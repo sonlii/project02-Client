@@ -8,11 +8,11 @@ import com.db.utils.decorators.Decorator;
 import com.db.utils.sctructures.Message;
 import lombok.AllArgsConstructor;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 @AllArgsConstructor
 public class Saver {
-    private PrintStream writer;
+    private PrintWriter writer;
     private Decorator decorator;
 
     public void save(String message) throws SaverException {

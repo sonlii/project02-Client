@@ -1,10 +1,10 @@
 package com.db.utils.sctructures;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response {
     private Message message;
     private int status;

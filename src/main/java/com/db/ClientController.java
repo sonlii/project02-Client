@@ -5,6 +5,7 @@ import com.db.commands.CommandFactory;
 import com.db.commands.results.CommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.exceptions.ConsoleParserException;
+import com.db.exceptions.UnknownCommandException;
 import com.db.utils.ConsoleParser;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
@@ -33,10 +34,13 @@ public class ClientController {
                 saver.save(e.getMessage());
                 continue;
             }
-            currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-            while (!currentCommand.isFinished()) {
+
+            try {
+                currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
                 CommandResult result = currentCommand.exec();
                 result.save(saver);
+            } catch (UnknownCommandException e) {
+                saver.save(e.getMessage());
             }
         }
     }
