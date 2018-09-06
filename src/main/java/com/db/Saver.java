@@ -31,5 +31,6 @@ public class Saver {
 
     public void save(MessageCommandResult commandResult) throws SaverException {
         writer.println(decorator.decorate(commandResult.getMessage()));
+        writer.flush();
     }
 }

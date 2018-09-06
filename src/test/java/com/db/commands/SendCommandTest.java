@@ -1,27 +1,20 @@
-package com.db;
+package com.db.commands;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.*;
-
-import com.db.commands.Command;
-import com.db.commands.CommandFactory;
 import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
-import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
-import com.db.exceptions.UnknownCommandException;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
 import com.db.utils.sctructures.Response;
-import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
+public class SendCommandTest {
 
-public class ClientControllerTest
-{
     private ServerConnector serverConnector;
 
     @Before
@@ -29,25 +22,19 @@ public class ClientControllerTest
         serverConnector = mock(ServerConnector.class);
     }
 
-    private Command getCommand(Pair<CommandType, String> parsedLine) throws UnknownCommandException {
-        return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-    }
-
-
     @Test
-    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException {
-        Message sendMessage = new Message("test \\send", null);
-        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
+    public void shouldCreateSendCommand() {
+        Command command = new SendCommand("", serverConnector);
         Response expectedResponse = new Response();
         expectedResponse.setMessage(new Message());
         expectedResponse.setStatus(0);
         when(serverConnector.sendRequest(any(Request.class))).thenReturn(expectedResponse);
 
-        Command command = getCommand(parsedLine);
         CommandResult commandResult = command.exec();
 
         verify(serverConnector, times(1)).sendRequest(any(Request.class));
         assertTrue(commandResult.getClass() == BlankCommandResult.class);
         assertTrue(command.isFinished());
     }
+
 }

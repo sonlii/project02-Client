@@ -8,8 +8,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static java.lang.Thread.interrupted;
 
 public class Server implements Runnable {
     private static final int MAX_CLIENTS_NUMBER = 1000;
@@ -27,20 +31,38 @@ public class Server implements Runnable {
         this.port = port;
         this.serializer = serializer;
         this.repository = repository;
+        this.clients = Collections.synchronizedSet(new HashSet<>());
     }
 
     public void run() {
         ExecutorService executors = Executors.newFixedThreadPool(MAX_CLIENTS_NUMBER);
 
         try (ServerSocket listener = new ServerSocket(port)) {
-            while (true) {
-                Socket clientSocket = listener.accept();
-                executors.execute(new ClientWorker(clientSocket, serializer, repository));
+            while (!interrupted()) {
+                try {
+                    Socket clientSocket = listener.accept();
+                    System.out.println("Client connected");
+                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this);
+                    executors.execute(worker);
+                    clients.add(worker);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             executors.shutdownNow();
         }
+    }
+
+    public void removeWorker(ClientWorker worker) {
+        clients.remove(worker);
+    }
+
+    public void broadcast(String message, ClientWorker excludedWorker) {
+        clients.stream()
+                .filter(m -> m == excludedWorker)
+                .forEach(m -> m.send(message));
     }
 }

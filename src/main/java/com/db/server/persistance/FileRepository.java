@@ -13,7 +13,7 @@ public class FileRepository implements Repository {
     public FileRepository(File file, Serializer serializer) throws IOException {
         this.file = file;
         output = new PrintWriter(
-                new BufferedWriter(new FileWriter(file))
+                new BufferedWriter(new FileWriter(file, true))
         );
         this.serializer = serializer;
     }
@@ -25,11 +25,11 @@ public class FileRepository implements Repository {
     }
 
     @Override
-    public FileIterator getFileIterator() throws FileNotFoundException {
+    public FileIterator getFileIterator(int batchSize) throws FileNotFoundException {
         BufferedReader input = new BufferedReader(
                 new FileReader(file)
         );
-        return new FileIterator(input, serializer);
+        return new FileIterator(input, serializer, batchSize);
     }
 
 

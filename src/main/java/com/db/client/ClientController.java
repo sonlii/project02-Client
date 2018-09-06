@@ -1,5 +1,7 @@
-package com.db;
+package com.db.client;
 
+import com.db.CommandType;
+import com.db.Saver;
 import com.db.commands.Command;
 import com.db.commands.CommandFactory;
 import com.db.commands.results.CommandResult;
@@ -37,8 +39,10 @@ public class ClientController {
 
             try {
                 currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-                CommandResult result = currentCommand.exec();
-                result.save(saver);
+                while (!currentCommand.isFinished()) {
+                    CommandResult result = currentCommand.exec();
+                    result.save(saver);
+                }
             } catch (UnknownCommandException e) {
                 saver.save(e.getMessage());
             }
