@@ -14,6 +14,11 @@ import java.util.Date;
  * Provides communication between the server and the client
  */
 public class ServerConnector implements Closeable {
+    private String address;
+    private int port;
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
 
     public ServerConnector(String address, int port) throws IOException {
         this.address = address;
@@ -43,12 +48,8 @@ public class ServerConnector implements Closeable {
 
     @Override
     public void close() throws IOException {
+        out.close();
+        in.close();
         socket.close();
     }
-
-    private String address;
-    private int port;
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
 }

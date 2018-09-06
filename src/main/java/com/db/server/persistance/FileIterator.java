@@ -23,6 +23,7 @@ public class FileIterator {
 
     public Collection<Message> getNextMessages() throws IOException {
         String line;
+        messages.clear();
         for (int i = 0; i < size; i++) {
             if ((line = input.readLine()) != null) {
                 messages.add(i, serializer.deserialize(line, Message.class));
