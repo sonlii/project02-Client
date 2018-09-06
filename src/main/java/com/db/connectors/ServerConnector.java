@@ -34,7 +34,10 @@ public class ServerConnector implements Closeable {
                                         socket.getInputStream())))
         ) {
             out.println(jsonSerializer.serialize(request));
-            return jsonSerializer.deserialize(in.readLine(), Response.class);
+            out.flush();
+            String str = in.readLine();
+            System.out.println("client: " + str);
+            return jsonSerializer.deserialize(str, Response.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

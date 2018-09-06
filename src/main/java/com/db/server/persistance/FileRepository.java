@@ -25,11 +25,11 @@ public class FileRepository implements Repository {
     }
 
     @Override
-    public FileIterator getFileIterator() throws FileNotFoundException {
+    public FileIterator getFileIterator(int batchSize) throws FileNotFoundException {
         BufferedReader input = new BufferedReader(
                 new FileReader(file)
         );
-        return new FileIterator(input, serializer);
+        return new FileIterator(input, serializer, batchSize);
     }
 
 

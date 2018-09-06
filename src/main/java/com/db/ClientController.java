@@ -28,6 +28,7 @@ public class ClientController {
         Pair<CommandType, String> parsedLine;
         Command currentCommand;
         while((line = readConsoleLine()) != null) {
+            System.out.println(line);
             try {
                 parsedLine = parser.parse(line);
             } catch (ConsoleParserException e) {
