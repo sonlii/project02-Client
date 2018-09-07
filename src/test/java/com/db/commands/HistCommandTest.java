@@ -3,6 +3,7 @@ package com.db.commands;
 import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
 import com.db.commands.results.MessageCommandResult;
+import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
@@ -10,9 +11,13 @@ import com.db.utils.sctructures.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -69,9 +74,37 @@ public class HistCommandTest {
         expectedResponse.setStatus(100);
         when(serverConnector.sendRequest(Matchers.any(Request.class))).thenReturn(expectedResponse);
 
-        command.exec();
+        CommandResult result = command.exec();
 
         assertTrue("Command should be finished by this moment", command.isFinished());
+        assertTrue("Should return proper type",
+                result.getClass() == MultipleMessageCommandResult.class);
+    }
+
+    @Test
+    public void shouldReturnBlankWhenReceivedMessagesWithStatus0() {
+        Command command = new HistCommand(0, serverConnector);
+        Response expectedResponse = new Response();
+        expectedResponse.setMessage(new Message());
+        expectedResponse.setStatus(0);
+        when(serverConnector.sendRequest(Matchers.any(Request.class))).thenReturn(expectedResponse);
+
+        CommandResult result = command.exec();
+
+        assertTrue("Should return proper type",
+                result.getClass() == BlankCommandResult.class);
+    }
+
+    @Test
+    public void shouldReturnBlankWhenResponseIsNull() {
+        Command command = new HistCommand(0, serverConnector);
+        Response expectedResponse = null;
+        when(serverConnector.sendRequest(Matchers.any(Request.class))).thenReturn(expectedResponse);
+
+        CommandResult result = command.exec();
+
+        assertTrue("Should return proper type",
+                result.getClass() == BlankCommandResult.class);
     }
 
     @Test
@@ -79,7 +112,7 @@ public class HistCommandTest {
         Command command = new HistCommand(0, serverConnector);
         Response expectedResponse = new Response();
         expectedResponse.setMessage(new Message());
-        expectedResponse.setStatus(0);
+        expectedResponse.setStatus(-10);
         when(serverConnector.sendRequest(Matchers.any(Request.class))).thenReturn(expectedResponse);
 
         CommandResult commandResult = command.exec();
