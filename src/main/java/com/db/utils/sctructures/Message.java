@@ -14,4 +14,5 @@ import java.util.Date;
 public class Message {
     private String body;
     private Date timestamp;
+    private String login;
 }

@@ -6,24 +6,24 @@ import com.db.commands.results.CommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
-import com.db.utils.sctructures.Response;
 
-import java.util.Date;
-
-public class SendCommand implements Command{
-    private String message;
+public class LoginCommand implements Command {
+    private boolean isFinished;
     private ServerConnector serverConnector;
-    private boolean isFinished = false;
+    private String login;
 
-    public SendCommand(String message, ServerConnector serverConnector) {
-        this.message = message;
+    public LoginCommand(ServerConnector serverConnector, String login) {
         this.serverConnector = serverConnector;
+        this.login = login;
     }
 
     @Override
     public CommandResult exec() {
-        Request request = new Request(new Message(message, new Date(0), serverConnector.getName()), CommandType.SND);
-        Response response = serverConnector.sendRequest(request);
+        Message message = new Message();
+        message.setLogin(login);
+        serverConnector.setName(login);
+        Request request = new Request(message, CommandType.CHID);
+        serverConnector.sendRequest(request);
         isFinished = true;
         return new BlankCommandResult();
     }

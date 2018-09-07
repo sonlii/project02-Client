@@ -8,6 +8,6 @@ import com.db.utils.sctructures.Message;
 public class ConsoleDecorator implements Decorator {
     @Override
     public String decorate(Message message) {
-        return String.format("%s: %s", message.getTimestamp(), message.getBody());
+        return String.format("%s [%s]: %s", message.getTimestamp(), message.getLogin(), message.getBody());
     }
 }

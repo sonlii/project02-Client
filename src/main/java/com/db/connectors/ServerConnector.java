@@ -21,6 +21,7 @@ public class ServerConnector implements Closeable {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private String name;
 
     public ServerConnector(String address, int port) throws IOException {
         this.address = address;
@@ -61,6 +62,14 @@ public class ServerConnector implements Closeable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public BufferedReader getIn() {

@@ -7,8 +7,8 @@ import com.db.commands.Command;
 import com.db.commands.CommandFactory;
 import com.db.commands.results.BlankCommandResult;
 import com.db.commands.results.CommandResult;
-import com.db.commands.results.MultipleMessageCommandResult;
 import com.db.connectors.ServerConnector;
+import com.db.exceptions.NaAthorizationException;
 import com.db.exceptions.UnknownCommandException;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
@@ -16,9 +16,6 @@ import com.db.utils.sctructures.Response;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
-
 
 public class ClientControllerTest
 {
@@ -29,15 +26,15 @@ public class ClientControllerTest
         serverConnector = mock(ServerConnector.class);
     }
 
-    private Command getCommand(Pair<CommandType, String> parsedLine) throws UnknownCommandException {
+    private Command getCommand(Pair<CommandType, String> parsedLine) throws UnknownCommandException, NaAthorizationException {
         return (new CommandFactory()).createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
     }
 
 
     @Test
-    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException {
-        Message sendMessage = new Message("test \\send", null);
-        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
+    public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException, NaAthorizationException {
+        Message sendMessage = new Message("test \\send", null, "login");
+        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.CHID, sendMessage.getBody());
         Response expectedResponse = new Response();
         expectedResponse.setMessage(new Message());
         expectedResponse.setStatus(0);
