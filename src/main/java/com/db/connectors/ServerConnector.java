@@ -59,7 +59,7 @@ public class ServerConnector implements Closeable {
         //    System.out.println("client: " + str);
             return jsonSerializer.deserialize(str, Response.class);
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return null;
     }

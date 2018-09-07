@@ -64,7 +64,7 @@ public class BroadcastListener implements Runnable {
                 } catch (SocketTimeoutException e) {
                     //pass
                 } catch (IOException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     return;
                 }
             }

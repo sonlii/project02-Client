@@ -32,8 +32,10 @@ public class SendCommandTest {
         CommandResult commandResult = command.exec();
 
         verify(serverConnector, times(1)).sendRequest(any(Request.class));
-        assertTrue(commandResult.getClass() == BlankCommandResult.class);
-        assertTrue(command.isFinished());
+        assertTrue("Result should be BlankCommandClass instance",
+                commandResult.getClass() == BlankCommandResult.class);
+        assertTrue("Command should be finished by this moment",
+                command.isFinished());
     }
 
 }
