@@ -69,22 +69,22 @@ public class ClientWorkerTest {
     public void shouldSendMsgAndReceiveResponse() {
         Request request = new Request(new Message("123213", new Date(), null), CommandType.SND);
         Response response = doRequest(request);
-        assertEquals(response.getStatus(), 0);
-        assertNull(response.getMessage());
+        assertEquals("Should return response with status 0", response.getStatus(), 0);
+        assertNull("Response message should be null", response.getMessage());
     }
 
     @Test
     public void shouldSendHistMsgAndReceiveResponse() {
         Request request = new Request(null, CommandType.HIST);
         Response response = doRequest(request);
-        assertEquals(1000, response.getStatus());
+        assertEquals("Should return respone with status 1000", 1000, response.getStatus());
     }
 
     @Test
     public void shouldShutdownWhenSendQuitRequest() {
         Request request = new Request(null, CommandType.QUIT);
         Response response = doRequest(request);
-        assertEquals(response.getStatus(), 0);
+        assertEquals("Should return response with status 0", response.getStatus(), 0);
     }
 
 

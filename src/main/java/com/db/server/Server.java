@@ -11,8 +11,10 @@ import java.net.SocketTimeoutException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static java.lang.Thread.interrupted;
 
@@ -23,6 +25,7 @@ public class Server implements Runnable {
     private Serializer serializer;
     private Repository repository;
     private Collection<ClientWorker> clients;
+    private ReentrantReadWriteLock lock;
 
     public Server(int port, Repository repository) {
         this(port, new JsonSerializer(), repository);
@@ -32,8 +35,8 @@ public class Server implements Runnable {
         this.port = port;
         this.serializer = serializer;
         this.repository = repository;
-        //TODO
-        this.clients = Collections.synchronizedList(new LinkedList<>());
+        this.clients = new LinkedList<>();
+        this.lock = new ReentrantReadWriteLock(true);
     }
 
     public void run() {
@@ -62,12 +65,23 @@ public class Server implements Runnable {
     }
 
     public void removeWorker(ClientWorker worker) {
-        clients.remove(worker);
+        try {
+            lock.writeLock().lock();
+            clients.remove(worker);
+        } finally {
+            lock.writeLock().unlock();
+        }
+
     }
 
     public void broadcast(String message, ClientWorker excludedWorker) {
-        clients.stream()
-                .filter(m -> m != excludedWorker)
-                .forEach(m -> m.send(message));
+        try {
+            lock.readLock().lock();
+            clients.stream()
+                    .filter(m -> m != null && m != excludedWorker)
+                    .forEach(m ->  m.send(message));
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 }

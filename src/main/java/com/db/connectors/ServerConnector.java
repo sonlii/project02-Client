@@ -49,9 +49,11 @@ public class ServerConnector implements Closeable {
 
             String str = null;
 
-            while(str == null) {
+            while (true) {
                 try {
                     str = in.readLine();
+                    if (str == null) return null;
+                    else break;
                 } catch (SocketTimeoutException e) {
 
                 }
@@ -59,7 +61,7 @@ public class ServerConnector implements Closeable {
         //    System.out.println("client: " + str);
             return jsonSerializer.deserialize(str, Response.class);
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return null;
     }
@@ -81,6 +83,7 @@ public class ServerConnector implements Closeable {
         out.close();
         in.close();
         socket.close();
+        System.out.println("Disconnected");
     }
 
     public void setSocketTimeout(int timeout) throws SocketException {

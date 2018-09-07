@@ -21,7 +21,7 @@ public class JsonSerializerTest {
     public void shouldReturnMessageObjectFromJson() throws IOException {
         String jsonString = "{\"body\":\"message\",\"timestamp\":1535723804800, \"login\":null}";
         Message msg = jsonConverter.deserialize(jsonString, Message.class);
-        assertNotNull(msg);
+        assertNotNull("Deserialized message should never be null", msg);
 
     }
 
@@ -32,7 +32,9 @@ public class JsonSerializerTest {
         Message message = new Message("message", currentDate, null);
 
         String jsonString = jsonConverter.serialize(message);
-        assertTrue(jsonString.contains("\"body\":\"message\""));
-        assertTrue(jsonString.contains("\"timestamp\":"+ currentDate.getTime() ));
+        assertTrue("Serialized Message should have expected format",
+                jsonString.contains("\"body\":\"message\""));
+        assertTrue("Serialized Message should have expected format",
+                jsonString.contains("\"timestamp\":"+ currentDate.getTime() ));
     }
 }
