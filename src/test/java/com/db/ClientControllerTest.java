@@ -34,7 +34,7 @@ public class ClientControllerTest
     @Test
     public void shouldCreateSendCommandAndCallSendRequestMethodAndReturnBlankMessageCommandResult() throws UnknownCommandException, NaAthorizationException {
         Message sendMessage = new Message("test \\send", null, "login");
-        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.SND, sendMessage.getBody());
+        Pair<CommandType, String> parsedLine = new Pair<>(CommandType.CHID, sendMessage.getBody());
         Response expectedResponse = new Response();
         expectedResponse.setMessage(new Message());
         expectedResponse.setStatus(0);
