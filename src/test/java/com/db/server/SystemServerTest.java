@@ -9,6 +9,7 @@ import com.db.utils.ConsoleParser;
 import com.db.utils.JsonSerializer;
 import com.db.utils.decorators.ConsoleDecorator;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -28,6 +29,7 @@ public class SystemServerTest {
         );
     }
 
+    @Ignore
     @Test
     public void shouldStoreSeveralMessages() throws InterruptedException {
 //        Thread serverThread = new Thread(server);
@@ -41,7 +43,7 @@ public class SystemServerTest {
 //                    new ConsoleParser(),
 //                    new CommandFactory());
 //            //    while (true) {
-//            controller.processInput();
+//            controller.execute();
 //            //    }
 //        } catch (IOException e) {
 //            e.printStackTrace();
