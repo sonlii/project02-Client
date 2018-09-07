@@ -43,7 +43,7 @@ public class SystemServerTest {
 //                    new ConsoleParser(),
 //                    new CommandFactory());
 //            //    while (true) {
-//            controller.processInput();
+//            controller.execute();
 //            //    }
 //        } catch (IOException e) {
 //            e.printStackTrace();

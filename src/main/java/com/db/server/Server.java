@@ -10,10 +10,9 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 
 import static java.lang.Thread.interrupted;
 
@@ -33,7 +32,8 @@ public class Server implements Runnable {
         this.port = port;
         this.serializer = serializer;
         this.repository = repository;
-        this.clients = Collections.synchronizedSet(new HashSet<>());
+        //TODO
+        this.clients = Collections.synchronizedList(new LinkedList<>());
     }
 
     public void run() {
@@ -45,9 +45,9 @@ public class Server implements Runnable {
                 try {
                     Socket clientSocket = listener.accept();
                     System.out.println("Client connected");
-                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this);
-                    executors.execute(worker);
+                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this, name);
                     clients.add(worker);
+                    executors.execute(worker);
                 } catch (SocketTimeoutException e) {
                     //pass
                 } catch (IOException e) {

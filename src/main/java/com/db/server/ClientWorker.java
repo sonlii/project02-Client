@@ -9,6 +9,7 @@ import com.db.utils.sctructures.Response;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class ClientWorker implements Runnable {
     private final Serializer serializer;
     private final Repository repository;
     private final Server server;
+    private final String name;
 
     private final String okStatus;
     private final String errorStatus;
@@ -34,11 +36,12 @@ public class ClientWorker implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
 
-    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server) throws IOException {
+    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server, String name) throws IOException {
         this.clientSocket = clientSocket;
         this.serializer = serializer;
         this.repository = repository;
         this.server = server;
+        this.name = name;
 
         Response emptyResponseWithStatus = new Response();
         emptyResponseWithStatus.setStatus(OK_STATUS);
@@ -54,36 +57,48 @@ public class ClientWorker implements Runnable {
     @Override
     public void run() {
         try {
-            in = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
-            out  = new PrintWriter(
-                    new OutputStreamWriter(clientSocket.getOutputStream()));
+            createIO();
             try {
                 do {
                     String str = in.readLine();
                     if (str == null) break;
-                    System.out.println("from client: " + str);
-                    Request request = serializer.deserialize(str, Request.class);
-                    String responseStatusString = processRequest(request);
-                    send(responseStatusString);
+                    processInput(str);
                 } while (!interrupted());
 
-            } catch (IOException e) {
-                processException(e);
+            } catch (SocketException e) {
+                return;
             }
         } catch (IOException e) {
             processException(e);
         } finally {
             try {
-                in.close();
-                out.close();
-                clientSocket.close();
-                System.out.println("client disconnected");
-                server.removeWorker(this);
+                close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void processInput(String str) throws IOException {
+        System.out.println("from client: " + str);
+        Request request = serializer.deserialize(str, Request.class);
+        String responseStatusString = processRequest(request);
+        send(responseStatusString);
+    }
+
+    private void createIO() throws IOException {
+        in = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream()));
+        out  = new PrintWriter(
+                new OutputStreamWriter(clientSocket.getOutputStream()));
+    }
+
+    private void close() throws IOException {
+        in.close();
+        out.close();
+        clientSocket.close();
+        System.out.println("client disconnected");
+        server.removeWorker(this);
     }
 
     private String processRequest(Request request) throws IOException {
