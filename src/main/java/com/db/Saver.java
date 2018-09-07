@@ -9,7 +9,6 @@ import com.db.utils.sctructures.Message;
 import lombok.AllArgsConstructor;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 @AllArgsConstructor

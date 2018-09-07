@@ -19,7 +19,7 @@ public class JsonSerializerTest {
 
     @Test
     public void shouldReturnMessageObjectFromJson() throws IOException {
-        String jsonString = "{\"body\":\"message\",\"timestamp\":1535723804800}";
+        String jsonString = "{\"body\":\"message\",\"timestamp\":1535723804800, \"login\":null}";
         Message msg = jsonConverter.deserialize(jsonString, Message.class);
         assertNotNull(msg);
 
@@ -29,7 +29,7 @@ public class JsonSerializerTest {
     @Test
     public void shouldReturnJsonFromMessageObject() throws IOException {
         Date currentDate = new Date();
-        Message message = new Message("message", currentDate);
+        Message message = new Message("message", currentDate, null);
 
         String jsonString = jsonConverter.serialize(message);
         assertTrue(jsonString.contains("\"body\":\"message\""));
