@@ -1,13 +1,7 @@
 package com.db.server;
 
-import com.db.client.ClientController;
-import com.db.Saver;
-import com.db.commands.CommandFactory;
-import com.db.connectors.ServerConnector;
 import com.db.server.persistance.FileRepository;
-import com.db.utils.ConsoleParser;
 import com.db.utils.JsonSerializer;
-import com.db.utils.decorators.ConsoleDecorator;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,6 +1,6 @@
 package com.db.client;
 
-import com.db.Saver;
+import com.db.commands.results.Saver;
 import com.db.commands.results.MessageCommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.utils.JsonSerializer;
