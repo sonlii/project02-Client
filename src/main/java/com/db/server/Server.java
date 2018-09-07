@@ -45,7 +45,7 @@ public class Server implements Runnable {
                 try {
                     Socket clientSocket = listener.accept();
                     System.out.println("Client connected");
-                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this, name);
+                    ClientWorker worker = new ClientWorker(clientSocket, serializer, repository, this, "");
                     clients.add(worker);
                     executors.execute(worker);
                 } catch (SocketTimeoutException e) {
