@@ -10,7 +10,7 @@ import java.io.*;
 public class ServerApp {
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = new Server(
-                6666,
+                5454,
                 new FileRepository(
                         new File("repo.txt"), new JsonSerializer()
                 )

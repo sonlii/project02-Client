@@ -29,35 +29,33 @@ public class BroadcastListener implements Runnable {
     public void run() {
         BufferedReader bufferedReader = serverConnector.getIn();
         try {
-            serverConnector.setSocketTimeout(100);
+            serverConnector.setSocketTimeout(50);
         } catch (SocketException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return;
         }
 
         String line;
         while (!interrupted()) {
-            synchronized (serverConnector) {
                 try {
                     line = bufferedReader.readLine();
+//                    System.out.println("Broadcast " + line);
                     if (line == null) break;
                     Response response = serializer.deserialize(line, Response.class);
                     saver.save(new MessageCommandResult(response.getMessage()));
                 } catch (SocketTimeoutException e) {
                     //pass
                 } catch (IOException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     return;
                 }
-            }
             try {
-                sleep(100);
+                sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 return;
             }
         }
     }
-
 }
+
 
