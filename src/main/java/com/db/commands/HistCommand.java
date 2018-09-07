@@ -31,7 +31,7 @@ public class HistCommand implements Command {
     public CommandResult exec() {
         Response response = null;
         if (firstRequest) {
-            Request request = new Request(new Message("" + pageNumber, null), CommandType.HIST);
+            Request request = new Request(new Message("" + pageNumber, null, serverConnector.getName()), CommandType.HIST);
             firstRequest = false;
             response = serverConnector.sendRequest(request);
         } else {

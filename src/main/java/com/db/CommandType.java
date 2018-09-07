@@ -6,5 +6,6 @@ package com.db;
 public  enum CommandType {
     SND,
     HIST,
-    QUIT;
+    QUIT,
+    CHID
 }

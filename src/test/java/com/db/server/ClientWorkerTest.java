@@ -51,7 +51,7 @@ public class ClientWorkerTest {
 
     @Test
     public void shouldSendMsgAndReceiveResponse() {
-        Request request = new Request(new Message("123213", new Date()), CommandType.SND);
+        Request request = new Request(new Message("123213", new Date(), null), CommandType.SND);
         Response response = doRequest(request);
         assertEquals(response.getStatus(), 0);
         assertNull(response.getMessage());
