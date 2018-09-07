@@ -31,7 +31,7 @@ public class SaverTest {
     @Test
     public void shouldFlushWhenSavingMessageCommandResult() throws SaverException {
         MessageCommandResult mockResult = mock(MessageCommandResult.class);
-        when(mockResult.getMessage()).thenReturn(new Message("test", new Date(0)));
+        when(mockResult.getMessage()).thenReturn(new Message("test", new Date(0), "login"));
         sut.save(mockResult);
 
         verify(mockWriter, times(1)).flush();
