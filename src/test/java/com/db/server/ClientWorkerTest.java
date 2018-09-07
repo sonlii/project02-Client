@@ -13,8 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.Date;
 
@@ -34,6 +33,23 @@ public class ClientWorkerTest {
                         new File("testing.txt"), new JsonSerializer()
                 )
         );
+        try (PrintWriter printWriter =
+                     new PrintWriter(
+                             new OutputStreamWriter(
+                                     new BufferedOutputStream(
+                                             new FileOutputStream(
+                                                     new File("testing.txt"),
+                                                     false))))) {
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252855807}");
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252864308}");
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252869277}");
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252872673}");
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252876123}");
+            printWriter.println("{\"body\":\"123213\",\"timestamp\":1536252878433}");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         serverThread = new Thread(server);
         serverThread.start();
 
@@ -61,7 +77,7 @@ public class ClientWorkerTest {
     public void shouldSendHistMsgAndReceiveResponse() {
         Request request = new Request(null, CommandType.HIST);
         Response response = doRequest(request);
-        assertEquals(response.getStatus(), 1000);
+        assertEquals(1000, response.getStatus());
     }
 
     @Test
