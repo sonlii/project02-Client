@@ -11,7 +11,7 @@ public class ServerApp {
         Server server = new Server(
                 6666,
                 new FileRepository(
-                        new File("testfile.txt"), new JsonSerializer()
+                        new File("repo.txt"), new JsonSerializer()
                 )
         );
 
