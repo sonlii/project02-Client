@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.db</OriginalElement>
+  <nodes>
+    <node x="1156.9054320987657" y="624.0">com.db.ConsoleParserTest</node>
+    <node x="994.0388888888889" y="178.0">com.db.CommandType</node>
+    <node x="154.28651455026454" y="396.0">com.db.utils.Serializer</node>
+    <node x="269.28651455026454" y="307.0">com.db.utils.sctructures.Response</node>
+    <node x="586.5388888888889" y="505.0">com.db.client.BroadcastListener</node>
+    <node x="0.0" y="396.0">com.db.server.persistance.Repository</node>
+    <node x="67.8365145502645" y="505.0">com.db.server.ClientWorker</node>
+    <node x="0.0" y="807.0">com.db.App</node>
+    <node x="788.2750308641977" y="396.0">com.db.commands.Command</node>
+    <node x="569.5920701058201" y="396.0">com.db.connectors.ServerConnector</node>
+    <node x="304.15000000000003" y="0.0">com.db.utils.sctructures.Message</node>
+    <node x="898.0388888888889" y="178.0">com.db.Saver</node>
+    <node x="388.28651455026454" y="307.0">com.db.utils.sctructures.Request</node>
+    <node x="68.19472442680797" y="624.0">com.db.server.Server</node>
+    <node x="374.08358245149924" y="624.0">com.db.ClientControllerTest</node>
+    <node x="916.2888888888889" y="99.0">com.db.utils.decorators.Decorator</node>
+    <node x="748.5388888888889" y="505.0">com.db.commands.CommandFactory</node>
+    <node x="736.5388888888889" y="307.0">com.db.commands.results.CommandResult</node>
+    <node x="1105.8484126984126" y="505.0">com.db.utils.ConsoleParser</node>
+    <node x="796.3475022045859" y="733.0">com.db.client.Client</node>
+    <node x="948.0404828042329" y="624.0">com.db.client.ClientController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.db.ClientControllerTest" target="com.db.commands.Command">
+      <point x="56.0" y="-14.5" />
+      <point x="507.08358245149924" y="594.0" />
+      <point x="738.0388888888889" y="594.0" />
+      <point x="738.0388888888889" y="485.0" />
+      <point x="805.7750308641977" y="485.0" />
+      <point x="-35.0" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.utils.sctructures.Response">
+      <point x="-56.0" y="-14.5" />
+      <point x="395.08358245149924" y="594.0" />
+      <point x="312.78651455026454" y="594.0" />
+      <point x="312.78651455026454" y="366.0" />
+      <point x="306.03651455026454" y="366.0" />
+      <point x="-12.25" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.Saver">
+      <point x="26.3333333333334" y="-14.5" />
+      <point x="862.1808355379193" y="703.0" />
+      <point x="1095.3484126984126" y="703.0" />
+      <point x="1095.3484126984126" y="247.0" />
+      <point x="961.3722222222223" y="247.0" />
+      <point x="25.33333333333337" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.commands.results.CommandResult">
+      <point x="0.0" y="-14.5" />
+      <point x="1014.0404828042329" y="574.0" />
+      <point x="969.0250308641977" y="574.0" />
+      <point x="969.0250308641977" y="376.0" />
+      <point x="850.7055555555555" y="376.0" />
+      <point x="45.6666666666666" y="14.5" />
+    </edge>
+    <edge source="com.db.server.Server" target="com.db.utils.Serializer">
+      <point x="33.33333333333337" y="-14.5" />
+      <point x="141.52805776014134" y="604.0" />
+      <point x="224.26114197530882" y="604.0" />
+      <point x="224.26114197530882" y="485.0" />
+      <point x="232.61984788359786" y="485.0" />
+      <point x="31.333333333333314" y="14.5" />
+    </edge>
+    <edge source="com.db.server.ClientWorker" target="com.db.server.persistance.Repository">
+      <point x="-46.80000000000001" y="-14.5" />
+      <point x="79.53651455026449" y="485.0" />
+      <point x="86.66666666666663" y="485.0" />
+      <point x="34.66666666666666" y="14.5" />
+    </edge>
+    <edge source="com.db.ConsoleParserTest" target="com.db.utils.ConsoleParser">
+      <point x="-48.33333333333337" y="-14.5" />
+      <point x="1181.0720987654324" y="604.0" />
+      <point x="1182.7234126984126" y="604.0" />
+      <point x="15.375" y="14.5" />
+    </edge>
+    <edge source="com.db.connectors.ServerConnector" target="com.db.utils.sctructures.Request">
+      <point x="33.99999999999994" y="-14.5" />
+      <point x="671.5920701058201" y="356.0" />
+      <point x="463.28651455026454" y="356.0" />
+      <point x="30.0" y="14.5" />
+    </edge>
+    <edge source="com.db.commands.results.CommandResult" target="com.db.Saver">
+      <point x="0.0" y="-14.5" />
+      <point x="805.0388888888889" y="257.0" />
+      <point x="910.7055555555555" y="257.0" />
+      <point x="-25.33333333333337" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.commands.results.CommandResult">
+      <point x="14.0" y="-14.5" />
+      <point x="465.08358245149924" y="564.0" />
+      <point x="502.90000000000003" y="564.0" />
+      <point x="502.90000000000003" y="376.0" />
+      <point x="759.3722222222223" y="376.0" />
+      <point x="-45.66666666666663" y="14.5" />
+    </edge>
+    <edge source="com.db.commands.CommandFactory" target="com.db.commands.Command">
+      <point x="0.0" y="-14.5" />
+      <point x="820.5388888888889" y="485.0" />
+      <point x="840.7750308641977" y="485.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.server.ClientWorker" target="com.db.utils.Serializer">
+      <point x="46.80000000000001" y="-14.5" />
+      <point x="173.1365145502645" y="485.0" />
+      <point x="169.95318121693117" y="485.0" />
+      <point x="-31.333333333333343" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.commands.CommandFactory">
+      <point x="0.0" y="-14.5" />
+      <point x="835.8475022045859" y="673.0" />
+      <point x="820.5388888888889" y="673.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.utils.sctructures.Message">
+      <point x="-70.0" y="-14.5" />
+      <point x="381.08358245149924" y="604.0" />
+      <point x="258.78651455026454" y="604.0" />
+      <point x="258.78651455026454" y="69.0" />
+      <point x="333.52500000000003" y="69.0" />
+      <point x="-17.625" y="14.5" />
+    </edge>
+    <edge source="com.db.server.Server" target="com.db.server.persistance.Repository">
+      <point x="-33.33333333333337" y="-14.5" />
+      <point x="74.8613910934746" y="604.0" />
+      <point x="32.25318121693124" y="604.0" />
+      <point x="32.25318121693124" y="485.0" />
+      <point x="17.33333333333337" y="485.0" />
+      <point x="-34.66666666666663" y="14.5" />
+    </edge>
+    <edge source="com.db.ConsoleParserTest" target="com.db.CommandType">
+      <point x="48.33333333333326" y="-14.5" />
+      <point x="1277.7387654320992" y="604.0" />
+      <point x="1266.5095987654322" y="604.0" />
+      <point x="1266.5095987654322" y="227.0" />
+      <point x="1114.1222222222223" y="227.0" />
+      <point x="54.58333333333326" y="14.5" />
+    </edge>
+    <edge source="com.db.connectors.ServerConnector" target="com.db.utils.sctructures.Response">
+      <point x="-34.00000000000006" y="-14.5" />
+      <point x="603.5920701058201" y="366.0" />
+      <point x="355.03651455026454" y="366.0" />
+      <point x="36.75" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.connectors.ServerConnector">
+      <point x="-37.71428571428578" y="-14.5" />
+      <point x="976.3261970899471" y="594.0" />
+      <point x="903.0388888888889" y="594.0" />
+      <point x="903.0388888888889" y="465.0" />
+      <point x="697.0920701058201" y="465.0" />
+      <point x="59.49999999999994" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.commands.CommandFactory">
+      <point x="70.0" y="-14.5" />
+      <point x="521.0835824514993" y="604.0" />
+      <point x="772.5388888888889" y="604.0" />
+      <point x="-48.0" y="14.5" />
+    </edge>
+    <edge source="com.db.utils.sctructures.Request" target="com.db.CommandType">
+      <point x="22.5" y="-14.5" />
+      <point x="455.78651455026454" y="267.0" />
+      <point x="1004.9555555555555" y="267.0" />
+      <point x="-54.58333333333337" y="14.5" />
+    </edge>
+    <edge source="com.db.Saver" target="com.db.utils.sctructures.Message">
+      <point x="-19.0" y="-14.5" />
+      <point x="917.0388888888889" y="153.0" />
+      <point x="905.7888888888889" y="153.0" />
+      <point x="905.7888888888889" y="59.0" />
+      <point x="380.52500000000003" y="59.0" />
+      <point x="29.375" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.Saver">
+      <point x="18.85714285714289" y="-14.5" />
+      <point x="1032.8976256613757" y="564.0" />
+      <point x="980.0250308641977" y="564.0" />
+      <point x="980.0250308641977" y="257.0" />
+      <point x="936.0388888888889" y="257.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.server.Server">
+      <point x="-35.111111111111086" y="-14.5" />
+      <point x="800.7363910934748" y="713.0" />
+      <point x="108.19472442680797" y="713.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.server.ClientWorker" target="com.db.utils.sctructures.Request">
+      <point x="23.399999999999977" y="-14.5" />
+      <point x="149.73651455026447" y="485.0" />
+      <point x="140.45000000000005" y="485.0" />
+      <point x="140.45000000000005" y="376.0" />
+      <point x="403.28651455026454" y="376.0" />
+      <point x="-30.0" y="14.5" />
+    </edge>
+    <edge source="com.db.utils.sctructures.Response" target="com.db.utils.sctructures.Message">
+      <point x="0.0" y="-14.5" />
+      <point x="318.28651455026454" y="79.0" />
+      <point x="345.27500000000003" y="79.0" />
+      <point x="-5.875" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.CommandType">
+      <point x="0.0" y="-14.5" />
+      <point x="451.08358245149924" y="554.0" />
+      <point x="491.90000000000003" y="554.0" />
+      <point x="491.90000000000003" y="277.0" />
+      <point x="1026.7888888888888" y="277.0" />
+      <point x="-32.75" y="14.5" />
+    </edge>
+    <edge source="com.db.server.ClientWorker" target="com.db.utils.sctructures.Message">
+      <point x="-23.399999999999977" y="-14.5" />
+      <point x="102.93651455026452" y="485.0" />
+      <point x="118.45000000000005" y="485.0" />
+      <point x="118.45000000000005" y="59.0" />
+      <point x="321.77500000000003" y="59.0" />
+      <point x="-29.375" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.utils.ConsoleParser">
+      <point x="35.111111111111114" y="-14.5" />
+      <point x="870.958613315697" y="713.0" />
+      <point x="1146.4054320987657" y="713.0" />
+      <point x="1146.4054320987657" y="604.0" />
+      <point x="1151.9734126984126" y="604.0" />
+      <point x="-15.375" y="14.5" />
+    </edge>
+    <edge source="com.db.commands.CommandFactory" target="com.db.CommandType">
+      <point x="47.99999999999997" y="-14.5" />
+      <point x="868.5388888888889" y="485.0" />
+      <point x="911.7750308641977" y="485.0" />
+      <point x="911.7750308641977" y="287.0" />
+      <point x="1048.6222222222223" y="287.0" />
+      <point x="-10.916666666666629" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.client.ClientController">
+      <point x="17.555555555555543" y="-14.5" />
+      <point x="853.4030577601415" y="693.0" />
+      <point x="1047.0404828042329" y="693.0" />
+      <point x="33.0" y="14.5" />
+    </edge>
+    <edge source="com.db.utils.ConsoleParser" target="com.db.CommandType">
+      <point x="0.0" y="-14.5" />
+      <point x="1167.3484126984126" y="237.0" />
+      <point x="1092.2888888888888" y="237.0" />
+      <point x="32.75" y="14.5" />
+    </edge>
+    <edge source="com.db.server.persistance.Repository" target="com.db.utils.sctructures.Message">
+      <point x="0.0" y="-14.5" />
+      <point x="52.0" y="49.0" />
+      <point x="310.02500000000003" y="49.0" />
+      <point x="-41.125" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.CommandType">
+      <point x="37.714285714285666" y="-14.5" />
+      <point x="1051.7547685185186" y="594.0" />
+      <point x="1070.4555555555555" y="594.0" />
+      <point x="10.916666666666629" y="14.5" />
+    </edge>
+    <edge source="com.db.client.BroadcastListener" target="com.db.connectors.ServerConnector">
+      <point x="35.25" y="-14.5" />
+      <point x="692.2888888888889" y="485.0" />
+      <point x="663.0920701058201" y="485.0" />
+      <point x="25.499999999999943" y="14.5" />
+    </edge>
+    <edge source="com.db.server.Server" target="com.db.server.ClientWorker">
+      <point x="-6.666666666666671" y="-14.5" />
+      <point x="101.52805776014128" y="604.0" />
+      <point x="97.0865145502645" y="604.0" />
+      <point x="-29.25" y="14.5" />
+    </edge>
+    <edge source="com.db.utils.sctructures.Request" target="com.db.utils.sctructures.Message">
+      <point x="-22.5" y="-14.5" />
+      <point x="410.78651455026454" y="69.0" />
+      <point x="368.77500000000003" y="69.0" />
+      <point x="17.625" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.connectors.ServerConnector">
+      <point x="-26.33333333333337" y="-14.5" />
+      <point x="809.5141688712525" y="703.0" />
+      <point x="553.1500000000001" y="703.0" />
+      <point x="553.1500000000001" y="465.0" />
+      <point x="612.0920701058201" y="465.0" />
+      <point x="-25.5" y="14.5" />
+    </edge>
+    <edge source="com.db.Saver" target="com.db.utils.decorators.Decorator">
+      <point x="19.0" y="-14.5" />
+      <point x="955.0388888888889" y="153.0" />
+      <point x="966.2888888888889" y="153.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.connectors.ServerConnector">
+      <point x="42.0" y="-14.5" />
+      <point x="493.08358245149924" y="584.0" />
+      <point x="524.9000000000001" y="584.0" />
+      <point x="524.9000000000001" y="455.0" />
+      <point x="595.0920701058201" y="455.0" />
+      <point x="-42.5" y="14.5" />
+    </edge>
+    <edge source="com.db.ClientControllerTest" target="com.db.utils.sctructures.Request">
+      <point x="-14.0" y="-14.5" />
+      <point x="437.08358245149924" y="604.0" />
+      <point x="433.28651455026454" y="604.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.utils.ConsoleParser">
+      <point x="56.571428571428555" y="-14.5" />
+      <point x="1070.6119113756613" y="604.0" />
+      <point x="1121.2234126984126" y="604.0" />
+      <point x="-46.125" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.commands.CommandFactory">
+      <point x="-56.571428571428555" y="-14.5" />
+      <point x="957.4690542328043" y="604.0" />
+      <point x="868.5388888888889" y="604.0" />
+      <point x="48.0" y="14.5" />
+    </edge>
+    <edge source="com.db.utils.decorators.Decorator" target="com.db.utils.sctructures.Message">
+      <point x="0.0" y="-14.5" />
+      <point x="966.2888888888889" y="49.0" />
+      <point x="392.27500000000003" y="49.0" />
+      <point x="41.125" y="14.5" />
+    </edge>
+    <edge source="com.db.commands.CommandFactory" target="com.db.connectors.ServerConnector">
+      <point x="-48.0" y="-14.5" />
+      <point x="772.5388888888889" y="475.0" />
+      <point x="680.0920701058201" y="475.0" />
+      <point x="42.49999999999994" y="14.5" />
+    </edge>
+    <edge source="com.db.client.Client" target="com.db.client.BroadcastListener">
+      <point x="-8.777777777777828" y="-14.5" />
+      <point x="827.0697244268081" y="683.0" />
+      <point x="657.0388888888889" y="683.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.client.ClientController" target="com.db.commands.Command">
+      <point x="-18.85714285714289" y="-14.5" />
+      <point x="995.18333994709" y="584.0" />
+      <point x="946.6970987654324" y="584.0" />
+      <point x="946.6970987654324" y="455.0" />
+      <point x="875.7750308641977" y="455.0" />
+      <point x="34.99999999999997" y="14.5" />
+    </edge>
+    <edge source="com.db.commands.Command" target="com.db.commands.results.CommandResult">
+      <point x="0.0" y="-14.5" />
+      <point x="840.7750308641977" y="376.0" />
+      <point x="805.0388888888889" y="376.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.db.server.ClientWorker" target="com.db.utils.sctructures.Response">
+      <point x="0.0" y="-14.5" />
+      <point x="126.3365145502645" y="485.0" />
+      <point x="129.45000000000005" y="485.0" />
+      <point x="129.45000000000005" y="366.0" />
+      <point x="281.53651455026454" y="366.0" />
+      <point x="-36.75" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.1084112149532712" x="456.4291736930859" y="594.158516020236" />
+  <SelectedNodes>
+    <node>com.db.utils.sctructures.Request</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

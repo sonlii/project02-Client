@@ -6,7 +6,6 @@ import com.db.utils.JsonSerializer;
 
 import java.io.*;
 
-
 public class ServerApp {
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = new Server(
