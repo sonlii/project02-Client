@@ -63,20 +63,20 @@
           </reportsDirectory>
           <timestampedReports>false</timestampedReports>
         </configuration>
-        <executions>
-          <execution>
-            <id>mutation-coverage</id>
-            <goals>
-              <goal>mutationCoverage</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>mutation-report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>mutation-coverage</id>-->
+            <!--<goals>-->
+              <!--<goal>mutationCoverage</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+          <!--<execution>-->
+            <!--<id>mutation-report</id>-->
+            <!--<goals>-->
+              <!--<goal>report</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -87,6 +87,25 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+
+            </configuration>
+            <executions>
+                <execution>
+                    <id>assemble-all</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 

@@ -5,10 +5,12 @@ import com.db.connectors.ServerConnector;
 import com.db.utils.JsonSerializer;
 import com.db.utils.Serializer;
 import com.db.utils.sctructures.Response;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+
 import static java.lang.Thread.interrupted;
 import static java.lang.Thread.sleep;
 /**
@@ -47,17 +49,19 @@ public class BroadcastListener implements Runnable {
     @Override
     public void run() {
         try {
-            serverConnector.setSocketTimeout(100);
+            serverConnector.setSocketTimeout(50);
         } catch (SocketException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return;
         }
+
         String line;
         while (!interrupted()) {
             synchronized (serverConnector) {
                 BufferedReader bufferedReader = serverConnector.getIn();
                 try {
                     line = bufferedReader.readLine();
+//                    System.out.println("Broadcast " + line);
                     if (line == null) break;
                     Response response = serializer.deserialize(line, Response.class);
                     saver.save(new MessageCommandResult(response.getMessage()));
@@ -74,9 +78,8 @@ public class BroadcastListener implements Runnable {
                  * and free the socket
                  * for another thread.
                  */
-                sleep(100);
+                sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 return;
             }
         }

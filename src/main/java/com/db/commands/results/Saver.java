@@ -39,11 +39,15 @@ public class Saver implements Closeable {
      */
     public void save(MultipleMessageCommandResult commandResult) throws SaverException {
         for (Message message : commandResult.getMessages()) {
+            if (message == null) continue;
             writer.println(decorator.decorate(message));
         }
+        writer.flush();
     }
 
     public void save(MessageCommandResult commandResult) throws SaverException {
+        Message message = commandResult.getMessage();
+        if (message == null) return;
         writer.println(decorator.decorate(commandResult.getMessage()));
         writer.flush();
     }
