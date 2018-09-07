@@ -6,10 +6,7 @@ import com.db.commands.Command;
 import com.db.commands.CommandFactory;
 import com.db.commands.results.CommandResult;
 import com.db.connectors.ServerConnector;
-import com.db.exceptions.ConsoleParserException;
-import com.db.exceptions.NaAthorizationException;
-import com.db.exceptions.QuitException;
-import com.db.exceptions.UnknownCommandException;
+import com.db.exceptions.*;
 import com.db.utils.ConsoleParser;
 import javafx.util.Pair;
 
@@ -19,7 +16,7 @@ import java.io.*;
  * Communicates with serverConnector and asks Console to print smth
  */
 
-public class ClientController {
+public class ClientController implements Runnable {
     private final ServerConnector serverConnector;
     private BufferedReader reader;
     private Saver saver;
@@ -36,35 +33,42 @@ public class ClientController {
         broadcastListenerThread =  new Thread(new BroadcastListener(serverConnector, saver));
     }
 
-    public void execute() throws IOException, QuitException {
+    @Override
+    public void run() {
         broadcastListenerThread.start();
         String line;
         Pair<CommandType, String> parsedLine;
         Command currentCommand;
-        while((line = readConsoleLine()) != null) {
-            try {
-                parsedLine = parser.parse(line);
-            } catch (ConsoleParserException e) {
-                saver.save(e.getMessage());
-                continue;
-            }
+        try {
+            while ((line = readConsoleLine()) != null) {
+                try {
+                    parsedLine = parser.parse(line);
+                } catch (ConsoleParserException e) {
+                    saver.save(e.getMessage());
+                    continue;
+                }
 
-            try {
-                currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
-                while (!currentCommand.isFinished()) {
-                    synchronized (serverConnector) {
+                try {
+                    currentCommand = commandFactory.createCommand(parsedLine.getKey(), parsedLine.getValue(), serverConnector);
+                    while (!currentCommand.isFinished()) {
                         CommandResult result = currentCommand.exec();
                         result.save(saver);
                     }
+                    saver.save("Command finished");
+                } catch (UnknownCommandException e) {
+                    saver.save(e.getMessage());
+                } catch (NaAthorizationException e) {
+                    saver.save("Can not run command without authorization");
                 }
-                saver.save("Command finished");
-            } catch (UnknownCommandException e) {
-                saver.save(e.getMessage());
-            } catch (NaAthorizationException e) {
-                saver.save("Can not run command without authorization");
+            }
+        } catch (IOException | QuitException e) {
+            try {
+                close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
-    }
+}
 
     private String readConsoleLine() throws IOException {
         return reader.readLine();

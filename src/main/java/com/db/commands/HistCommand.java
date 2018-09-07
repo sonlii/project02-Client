@@ -36,11 +36,16 @@ public class HistCommand implements Command {
             response = serverConnector.sendRequest(request);
         } else {
             try {
-                response = (new JsonSerializer()).deserialize(serverConnector.getIn().readLine(), Response.class);
+                String line = null;
+                while (line == null) {
+                    line = serverConnector.getIn().readLine();
+                }
+                response = (new JsonSerializer()).deserialize(line, Response.class);
             } catch (IOException e) {
-                e.printStackTrace();
+//                return null;
             }
         }
+        if (response == null) return new BlankCommandResult();
         if (response.getStatus() == 100) {
             isFinished = true;
             return new MultipleMessageCommandResult(broadcastToSend);

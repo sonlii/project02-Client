@@ -7,7 +7,7 @@ import java.io.*;
 
 public class FileRepository implements Repository {
     private PrintWriter output;
-    File file;
+    private File file;
     private Serializer serializer;
 
     public FileRepository(File file, Serializer serializer) throws IOException {

@@ -38,8 +38,9 @@ public class HistCommandTest {
         CommandResult commandResult = command.exec();
 
         verify(serverConnector, times(1)).sendRequest(any(Request.class));
-        assertTrue(commandResult.getClass() == MessageCommandResult.class);
-        assertFalse(command.isFinished());
+        assertTrue("Should return MessageCommandResult instance",
+                commandResult.getClass() == MessageCommandResult.class);
+        assertFalse("Command should not be finished by this moment", command.isFinished());
     }
 
     @Test
@@ -57,7 +58,7 @@ public class HistCommandTest {
         command.exec();
 
         verify(serverConnector, times(1)).sendRequest(any(Request.class));
-        assertFalse(command.isFinished());
+        assertFalse("Command should not be finished by this moment", command.isFinished());
     }
 
     @Test
@@ -70,7 +71,7 @@ public class HistCommandTest {
 
         command.exec();
 
-        assertTrue(command.isFinished());
+        assertTrue("Command should be finished by this moment", command.isFinished());
     }
 
     @Test
@@ -83,6 +84,7 @@ public class HistCommandTest {
 
         CommandResult commandResult = command.exec();
 
-        assertTrue(commandResult.getClass() == BlankCommandResult.class);
+        assertTrue("Should return BlankCommandResult instance",
+                commandResult.getClass() == BlankCommandResult.class);
     }
 }
