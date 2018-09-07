@@ -8,5 +8,5 @@ import java.util.Collection;
 
 public interface Repository {
     void saveMessage(Message msg) throws IOException;
-    FileIterator getFileIterator() throws FileNotFoundException;
+    FileIterator getFileIterator(int batchSize) throws FileNotFoundException;
 }

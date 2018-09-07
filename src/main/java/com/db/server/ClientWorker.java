@@ -6,69 +6,140 @@ import com.db.utils.Serializer;
 import com.db.utils.sctructures.Message;
 import com.db.utils.sctructures.Request;
 import com.db.utils.sctructures.Response;
-import lombok.AllArgsConstructor;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Date;
 
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.interrupted;
 
-@AllArgsConstructor
 public class ClientWorker implements Runnable {
-    private Socket clientSocket;
-    private Serializer serializer;
-    private Repository repository;
+    private static final int OK_STATUS = 0;
+    private static final int ERROR_STATUS = 505;
+    private static final int HISTORY_CONTINUATION_STATUS = 1000;
+    private static final int HISTORY_FINAL_STATUS = 100;
+    private static final int BATCH_SIZE = 1000;
+
+    private final Socket clientSocket;
+    private final Serializer serializer;
+    private final Repository repository;
+    private final Server server;
+    private final String name;
+
+    private final String okStatus;
+    private final String errorStatus;
+    private final String endHistoryStatus;
+
+    private BufferedReader in;
+    private PrintWriter out;
+
+    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server, String name) throws IOException {
+        this.clientSocket = clientSocket;
+        this.serializer = serializer;
+        this.repository = repository;
+        this.server = server;
+        this.name = name;
+
+        Response emptyResponseWithStatus = new Response();
+        emptyResponseWithStatus.setStatus(OK_STATUS);
+        this.okStatus = serializer.serialize(emptyResponseWithStatus);
+
+        emptyResponseWithStatus.setStatus(ERROR_STATUS);
+        this.errorStatus = serializer.serialize(emptyResponseWithStatus);
+
+        emptyResponseWithStatus.setStatus(HISTORY_FINAL_STATUS);
+        this.endHistoryStatus = serializer.serialize(emptyResponseWithStatus);
+    }
 
     @Override
     public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(
-                clientSocket.getInputStream()));
-             PrintWriter out = new PrintWriter(new OutputStreamWriter(
-                     clientSocket.getOutputStream()))
-        ) {
+        try {
+            createIO();
             try {
-                Message clientMessage;
-
-                main_cycle: do {
-                    Request request = serializer.deserialize(in.readLine(), Request.class);
-                    switch (request.getCommandType()) {
-                        case SND:
-                            clientMessage = request.getMessage();
-                            clientMessage.setTimestamp(new Date());
-                            repository.saveMessage(clientMessage);
-                            break;
-                        case HIST:
-                            Collection<Message> history;
-                            FileIterator fileIterator = repository.getFileIterator();
-                            while(!(history = fileIterator.getNextMessages(1000)).isEmpty()) {
-                                history.forEach(m -> {
-                                    try {
-                                        out.println(serializer.serialize(new Response(m, 1000)));
-                                    } catch (IOException e) {
-                                        out.println(new Response(null,  505));
-                                    }
-                                });
-                            }
-                            out.println(new Response(null, 0));
-                            break;
-                        case QUIT:
-                            break main_cycle;
-                    }
+                do {
+                    String str = in.readLine();
+                    if (str == null) break;
+                    processInput(str);
                 } while (!interrupted());
 
-            } catch (IOException e) {
-                out.println(new Response(null, 505));
+            } catch (SocketException e) {
+                return;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            processException(e);
         } finally {
             try {
-                clientSocket.close();
+                close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void processInput(String str) throws IOException {
+        System.out.println("from client: " + str);
+        Request request = serializer.deserialize(str, Request.class);
+        String responseStatusString = processRequest(request);
+        send(responseStatusString);
+    }
+
+    private void createIO() throws IOException {
+        in = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream()));
+        out  = new PrintWriter(
+                new OutputStreamWriter(clientSocket.getOutputStream()));
+    }
+
+    private void close() throws IOException {
+        in.close();
+        out.close();
+        clientSocket.close();
+        System.out.println("client disconnected");
+        server.removeWorker(this);
+    }
+
+    private String processRequest(Request request) throws IOException {
+        switch (request.getCommandType()) {
+            case SND:
+                Message clientMessage = request.getMessage();
+                clientMessage.setTimestamp(new Date());
+                repository.saveMessage(clientMessage);
+                server.broadcast(serializer.serialize(new Response(clientMessage, OK_STATUS)), this);
+                break;
+            case HIST:
+                Collection<Message> history;
+                FileIterator fileIterator = repository.getFileIterator(BATCH_SIZE);
+                while(!(history = fileIterator.getNextMessages()).isEmpty()) {
+                    for (Message msg : history) {
+                        try {
+                            send(serializer.serialize(new Response(msg, HISTORY_CONTINUATION_STATUS)));
+                        } catch (IOException e) {
+                            return errorStatus;
+                        }
+                    }
+                }
+                return endHistoryStatus;
+            case QUIT:
+                currentThread().interrupt();
+                break;
+            default:
+                return errorStatus;
+        }
+        return okStatus;
+    }
+
+    private void processException(Exception e) {
+        e.printStackTrace();
+        if(out == null) return;
+        send(errorStatus);
+    }
+
+    public void send(String message) {
+    //    System.out.println("to client: " + message);
+        out.println(message);
+        out.flush();
     }
 }

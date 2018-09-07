@@ -2,7 +2,8 @@ package com.db.utils.sctructures;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Response {
