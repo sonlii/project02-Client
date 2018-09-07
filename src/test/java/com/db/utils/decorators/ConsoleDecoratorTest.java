@@ -26,7 +26,7 @@ public class ConsoleDecoratorTest {
         Date currentDate = new Date();
         when(msg.getTimestamp()).thenReturn(currentDate);
 
-        assertEquals(currentDate.toString() + ": message", decorator.decorate(msg));
+        assertEquals(currentDate.toString() + " [null]: message", decorator.decorate(msg));
     }
 
     @Test (expected = NullPointerException.class)

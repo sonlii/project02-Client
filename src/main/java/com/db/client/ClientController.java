@@ -1,12 +1,13 @@
 package com.db.client;
 
 import com.db.CommandType;
-import com.db.Saver;
+import com.db.commands.results.Saver;
 import com.db.commands.Command;
 import com.db.commands.CommandFactory;
 import com.db.commands.results.CommandResult;
 import com.db.connectors.ServerConnector;
 import com.db.exceptions.ConsoleParserException;
+import com.db.exceptions.NaAthorizationException;
 import com.db.exceptions.QuitException;
 import com.db.exceptions.UnknownCommandException;
 import com.db.utils.ConsoleParser;
@@ -19,7 +20,7 @@ import java.io.*;
  */
 
 public class ClientController {
-    private ServerConnector serverConnector;
+    private final ServerConnector serverConnector;
     private BufferedReader reader;
     private Saver saver;
     private ConsoleParser parser;
@@ -59,6 +60,8 @@ public class ClientController {
                 saver.save("Command finished");
             } catch (UnknownCommandException e) {
                 saver.save(e.getMessage());
+            } catch (NaAthorizationException e) {
+                saver.save("Can not run command without authorization");
             }
         }
     }

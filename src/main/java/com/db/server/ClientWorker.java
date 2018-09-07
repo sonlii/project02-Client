@@ -27,7 +27,6 @@ public class ClientWorker implements Runnable {
     private final Serializer serializer;
     private final Repository repository;
     private final Server server;
-    private final String name;
 
     private final String okStatus;
     private final String errorStatus;
@@ -35,13 +34,13 @@ public class ClientWorker implements Runnable {
 
     private BufferedReader in;
     private PrintWriter out;
+    private String name;
 
-    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server, String name) throws IOException {
+    public ClientWorker(Socket clientSocket, Serializer serializer, Repository repository, Server server) throws IOException {
         this.clientSocket = clientSocket;
         this.serializer = serializer;
         this.repository = repository;
         this.server = server;
-        this.name = name;
 
         Response emptyResponseWithStatus = new Response();
         emptyResponseWithStatus.setStatus(OK_STATUS);
@@ -58,9 +57,10 @@ public class ClientWorker implements Runnable {
     public void run() {
         try {
             createIO();
+            String str;
             try {
                 do {
-                    String str = in.readLine();
+                    str = in.readLine();
                     if (str == null) break;
                     processInput(str);
                 } while (!interrupted());
@@ -125,6 +125,9 @@ public class ClientWorker implements Runnable {
             case QUIT:
                 currentThread().interrupt();
                 break;
+            case CHID:
+                setName(request.getMessage().getLogin());
+                break;
             default:
                 return errorStatus;
         }
@@ -141,5 +144,13 @@ public class ClientWorker implements Runnable {
     //    System.out.println("to client: " + message);
         out.println(message);
         out.flush();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
